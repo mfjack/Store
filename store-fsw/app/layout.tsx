@@ -6,21 +6,21 @@ import Header from "@/components/ui/header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "FSW Store",
-    description: "Sua loja de eletrônicos.",
+  title: "FSW Store",
+  description: "Sua loja de eletrônicos.",
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang='pt-BR'>
-            <body className={inter.className}>
-                <Header />
-                {children}
-            </body>
-        </html>
-    );
+  return (
+    <html lang="pt-BR">
+      <body className={inter.className}>
+        <Header />
+        {children}
+      </body>
+    </html>
+  );
 }
