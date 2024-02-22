@@ -1,5 +1,4 @@
 import { prismaClient } from "@/lib/prisma";
-import Image from "next/image";
 import CategoryItem from "./categoryItem";
 
 const Categories = async () => {
