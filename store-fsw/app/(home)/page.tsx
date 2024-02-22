@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Categories from "./components/categories";
 
 const Home = () => {
   return (
@@ -12,6 +13,10 @@ const Home = () => {
         width={350}
         height={150}
       />
+
+      <div className="mt-8">
+        <Categories />
+      </div>
     </>
   );
 };
