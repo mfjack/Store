@@ -20,7 +20,7 @@ const Home = async () => {
       },
     },
   });
-
+  
   const mouses = await prismaClient.product.findMany({
     where: {
       category: {
@@ -30,7 +30,7 @@ const Home = async () => {
   });
 
   return (
-    <section className="flex flex-col gap-8">
+    <section className="flex flex-col gap-8 py-8">
       <PromoBanner
         src="./banner01-home.svg"
         alt="Desconto de 55% só esse mês"
