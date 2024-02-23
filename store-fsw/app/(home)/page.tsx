@@ -1,5 +1,4 @@
 import { prismaClient } from "@/lib/prisma";
-import Image from "next/image";
 import Categories from "./components/categories";
 import ProductList from "./components/productList";
 import SectionTitle from "./components/sectionTitle";
@@ -23,17 +22,17 @@ const Home = async () => {
   });
 
   return (
-    <>
+    <section className="flex flex-col gap-8">
       <PromoBanner
         src="./banner01-home.svg"
         alt="Desconto de 55% só esse mês"
       />
 
-      <div className="p-5">
+      <div className="px-5">
         <Categories />
       </div>
 
-      <div className="mt-5">
+      <div>
         <SectionTitle title="Ofertas" />
         <ProductList products={deals} />
       </div>
@@ -43,11 +42,21 @@ const Home = async () => {
         alt="Até 55% de desconto em mouses"
       />
 
-      <div className="mt-5">
+      <div>
         <SectionTitle title="Teclados" />
         <ProductList products={keyboards} />
       </div>
-    </>
+
+      <PromoBanner
+        src="./banner03-home.svg"
+        alt="Até 55% de desconto em mouses"
+      />
+
+      {/* <div>
+        <SectionTitle title="Mouses" />
+        <ProductList products={keyboards} />
+      </div> */}
+    </section>
   );
 };
 

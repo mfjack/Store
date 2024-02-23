@@ -12,8 +12,8 @@ const PromoBanner = ({ src, alt }: PromoBannerProps) => {
         className="h-auto w-full px-5"
         src={src}
         alt={alt}
-        width={100}
-        height={100}
+        width={350}
+        height={250}
       />
     </>
   );
