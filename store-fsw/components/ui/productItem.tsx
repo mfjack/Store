@@ -13,28 +13,26 @@ const ProductItem = ({ product }: ProductItemProps) => {
         <Image
           src={product.imageUrls[0]}
           alt={product.name}
-          height={0}
+          height={0}  
           width={0}
           sizes="100vw"
           className="h-auto max-h-[70%] w-auto max-w-[80%]"
           style={{ objectFit: "contain" }}
         />
-        {product.discountPercent > 0 && (
+        {product.discountPercentage > 0 && (
           <Badge className="absolute left-3 top-3 px-2 py-[2px]">
             <ArrowDownIcon size={14} />
-            {product.discountPercent}%
+            {product.discountPercentage}%
           </Badge>
         )}
       </div>
-
-      {/* <div>{product.name}</div> */}
 
       <div className="flex flex-col gap-1">
         <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm">
           {product.name}
         </p>
         <div className="flex items-center gap-2">
-          {product.discountPercent > 0 ? (
+          {product.discountPercentage > 0 ? (
             <>
               <p className="font-semibold">
                 R$ {product.totalPrice.toFixed(2)}

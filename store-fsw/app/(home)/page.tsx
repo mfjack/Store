@@ -6,7 +6,7 @@ import ProductList from "./components/productList";
 const Home = async () => {
   const deals = await prismaClient.product.findMany({
     where: {
-      discountPercent: {
+      discountPercentage: {
         gt: 0,
       },
     },
