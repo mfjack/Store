@@ -20,7 +20,7 @@ const Home = async () => {
       },
     },
   });
-  
+
   const mouses = await prismaClient.product.findMany({
     where: {
       category: {
