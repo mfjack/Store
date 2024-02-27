@@ -1,11 +1,9 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import DiscountBadge from "@/components/ui/discountBadge";
 import { ProductWithTotalPrice } from "@/helpers/product";
-import { Product } from "@prisma/client";
 import {
-  ArrowDownIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
   TruckIcon,
@@ -38,10 +36,9 @@ const ProductInfo = ({
       <div className="flex items-center gap-1">
         <h1 className="gap-2 text-xl font-bold">R$ {totalPrice.toFixed(2)}</h1>
         {discountPercentage > 0 && (
-          <Badge className="px-2 py-[2px]">
-            <ArrowDownIcon size={14} />
-            {discountPercentage}%
-          </Badge>
+          <DiscountBadge className="absolute left-3 top-3">
+            {discountPercentage}
+          </DiscountBadge>
         )}
       </div>
 
