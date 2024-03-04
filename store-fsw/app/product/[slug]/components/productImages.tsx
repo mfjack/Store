@@ -32,11 +32,10 @@ const ProductImages = ({ imageUrls, name }: ProductImagesProps) => {
       <div className="mt-5 grid grid-cols-4 gap-4 px-5">
         {imageUrls.map((imageUrl) => (
           <button
-            className={`h-[80px] w-[80px] rounded-lg ${
-              imageUrl === currentImage
+            className={`h-[80px] w-[80px] rounded-lg ${imageUrl === currentImage
                 ? "border-2 border-primary"
                 : "border-2 border-transparent"
-            }`}
+              }`}
             onClick={() => handleImageClick(imageUrl)}
             key={imageUrl}
           >
