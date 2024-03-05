@@ -13,6 +13,7 @@ interface ICartContext {
    cartBasePrice: number;
    cartTotalDiscount: number;
    addProductToCart: (product: CartProduct) => void;
+   decreaseProductQuantify: (productId: string) => void;
 }
 
 export const CartContext = createContext<ICartContext>({
@@ -21,6 +22,7 @@ export const CartContext = createContext<ICartContext>({
    cartBasePrice: 0,
    cartTotalDiscount: 0,
    addProductToCart: () => { },
+   decreaseProductQuantify: () => { }
 });
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
@@ -28,14 +30,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
    const addProductToCart = (product: CartProduct) => {
 
-
-
-
-
-
       const productIsAlreadyOnCart = products.some(
-         (cartProduct) => cartProduct.id === product.id
-      )
+         (cartProduct) => cartProduct.id === product.id,
+      );
 
       if (productIsAlreadyOnCart) {
          setProducts((prev) =>
@@ -43,15 +40,34 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                if (cartProduct.id === product.id) {
                   return {
                      ...cartProduct,
-                     quantity: cartProduct.quantity + product.quantity
-                  }
+                     quantity: cartProduct.quantity + product.quantity,
+                  };
                }
 
-               return cartProduct
-            }))
+               return cartProduct;
+            }),
+         );
       }
 
       setProducts((prev) => [...prev, product]);
+   };
+
+   const decreaseProductQuantify = (productId: string) => {
+
+      setProducts((prev) =>
+         prev
+            .map((cartProduct) => {
+               if (cartProduct.id === productId) {
+                  return {
+                     ...cartProduct,
+                     quantity: cartProduct.quantity - 1,
+                  };
+               }
+
+               return cartProduct;
+            })
+            .filter((cartProduct) => cartProduct.quantity > 0),
+      );
    };
 
    return (
@@ -59,6 +75,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
          value={{
             products,
             addProductToCart,
+            decreaseProductQuantify,
             cartTotalPrice: 0,
             cartBasePrice: 0,
             cartTotalDiscount: 0,
