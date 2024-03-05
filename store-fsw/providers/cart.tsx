@@ -1,119 +1,134 @@
 "use client";
 
 import { ProductWithTotalPrice } from "@/helpers/product";
-import { createContext, useState } from "react";
+import { createContext, useMemo, useState } from "react";
 
 export interface CartProduct extends ProductWithTotalPrice {
-   quantity: number;
+  quantity: number;
 }
 
 interface ICartContext {
-   products: CartProduct[];
-   cartTotalPrice: number;
-   cartBasePrice: number;
-   cartTotalDiscount: number;
-   addProductToCart: (product: CartProduct) => void;
-   decreaseProductQuantify: (productId: string) => void;
-   increaseProductQuantify: (productId: string) => void;
-   removeProductFromCart: (productId: string) => void;
+  products: CartProduct[];
+  cartTotalPrice: number;
+  cartBasePrice: number;
+  cartTotalDiscount: number;
+  total: number;
+  subtotal: number;
+  totalDiscount: number;
+  addProductToCart: (product: CartProduct) => void;
+  decreaseProductQuantify: (productId: string) => void;
+  increaseProductQuantify: (productId: string) => void;
+  removeProductFromCart: (productId: string) => void;
 }
 
 export const CartContext = createContext<ICartContext>({
-   products: [],
-   cartTotalPrice: 0,
-   cartBasePrice: 0,
-   cartTotalDiscount: 0,
-   addProductToCart: () => { },
-   decreaseProductQuantify: () => { },
-   increaseProductQuantify: () => { },
-   removeProductFromCart: () => { }
+  products: [],
+  cartTotalPrice: 0,
+  cartBasePrice: 0,
+  cartTotalDiscount: 0,
+  total: 0,
+  subtotal: 0,
+  totalDiscount: 0,
+  addProductToCart: () => {},
+  decreaseProductQuantify: () => {},
+  increaseProductQuantify: () => {},
+  removeProductFromCart: () => {},
 });
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-   const [products, setProducts] = useState<CartProduct[]>([]);
+  const [products, setProducts] = useState<CartProduct[]>([]);
 
-   const addProductToCart = (product: CartProduct) => {
+  const subtotal = useMemo(() => {
+    return products.reduce((acc, product) => {
+      return acc + Number(product.basePrice);
+    }, 0);
+  }, [products]);
 
-      const productIsAlreadyOnCart = products.some(
-         (cartProduct) => cartProduct.id === product.id,
-      );
+  const total = useMemo(() => {
+    return products.reduce((acc, product) => {
+      return acc + Number(product.totalPrice);
+    }, 0);
+  }, [products]);
 
-      if (productIsAlreadyOnCart) {
-         setProducts((prev) =>
-            prev.map((cartProduct) => {
-               if (cartProduct.id === product.id) {
-                  return {
-                     ...cartProduct,
-                     quantity: cartProduct.quantity + product.quantity,
-                  };
-               }
+  const totalDiscount = subtotal - total;
 
-               return cartProduct;
-            }),
-         );
-      }
+  const addProductToCart = (product: CartProduct) => {
+    const productIsAlreadyOnCart = products.some(
+      (cartProduct) => cartProduct.id === product.id,
+    );
 
-      setProducts((prev) => [...prev, product]);
-   };
-
-   const decreaseProductQuantify = (productId: string) => {
-
+    if (productIsAlreadyOnCart) {
       setProducts((prev) =>
-         prev
-            .map((cartProduct) => {
-               if (cartProduct.id === productId) {
-                  return {
-                     ...cartProduct,
-                     quantity: cartProduct.quantity - 1,
-                  };
-               }
+        prev.map((cartProduct) => {
+          if (cartProduct.id === product.id) {
+            return {
+              ...cartProduct,
+              quantity: cartProduct.quantity + product.quantity,
+            };
+          }
 
-               return cartProduct;
-            })
-            .filter((cartProduct) => cartProduct.quantity > 0),
+          return cartProduct;
+        }),
       );
-   };
+    }
 
-   const increaseProductQuantify = (productId: string) => {
+    setProducts((prev) => [...prev, product]);
+  };
 
-      setProducts((prev) =>
-         prev
-            .map((cartProduct) => {
-               if (cartProduct.id === productId) {
-                  return {
-                     ...cartProduct,
-                     quantity: cartProduct.quantity + 1,
-                  };
-               }
+  const decreaseProductQuantify = (productId: string) => {
+    setProducts((prev) =>
+      prev
+        .map((cartProduct) => {
+          if (cartProduct.id === productId) {
+            return {
+              ...cartProduct,
+              quantity: cartProduct.quantity - 1,
+            };
+          }
 
-               return cartProduct;
-            })
-      );
-   };
+          return cartProduct;
+        })
+        .filter((cartProduct) => cartProduct.quantity > 0),
+    );
+  };
 
-   const removeProductFromCart = (productId: string) => {
+  const increaseProductQuantify = (productId: string) => {
+    setProducts((prev) =>
+      prev.map((cartProduct) => {
+        if (cartProduct.id === productId) {
+          return {
+            ...cartProduct,
+            quantity: cartProduct.quantity + 1,
+          };
+        }
 
-      setProducts((prev) =>
-         prev.filter((cartProduct) => cartProduct.id !== productId),
-      );
-   }
+        return cartProduct;
+      }),
+    );
+  };
 
-   return (
-      <CartContext.Provider
-         value={{
-            products,
-            addProductToCart,
-            decreaseProductQuantify,
-            increaseProductQuantify,
-            removeProductFromCart,
-            cartTotalPrice: 0,
-            cartBasePrice: 0,
-            cartTotalDiscount: 0,
-         }}
-      >
-         {children}
-      </CartContext.Provider>
-   );
+  const removeProductFromCart = (productId: string) => {
+    setProducts((prev) =>
+      prev.filter((cartProduct) => cartProduct.id !== productId),
+    );
+  };
+
+  return (
+    <CartContext.Provider
+      value={{
+        products,
+        addProductToCart,
+        decreaseProductQuantify,
+        increaseProductQuantify,
+        removeProductFromCart,
+        cartTotalPrice: 0,
+        cartBasePrice: 0,
+        cartTotalDiscount: 0,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
 };
 
 export default CartProvider;
