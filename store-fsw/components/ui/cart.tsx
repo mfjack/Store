@@ -9,6 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "./button";
 import { createCheckout } from "@/actions/checkout";
 import { loadStripe } from "@stripe/stripe-js"
+import CartItem from "./cardItem";
 
 const Cart = () => {
    const { products, subtotal, total, totalDiscount } = useContext(CartContext);
@@ -28,18 +29,23 @@ const Cart = () => {
             Carrinho
          </Badge>
 
-         <div className="flex flex-col gap-5 h-full max-h-full overflow-hidden">
+         <div className="flex h-full max-h-full flex-col gap-5 overflow-hidden">
             <ScrollArea className="h-full">
-               <div className="flex flex-col gap-7 h-full">
+               <div className="flex h-full flex-col gap-8">
                   {products.length > 0 ? (
                      products.map((product) => (
-                        <CardItem
+                        <CartItem
                            key={product.id}
-                           product={computeProductTotalPrice(product as any) as any}
+                           product={{
+                              ...product,
+                              totalPrice: computeProductTotalPrice(product),
+                           }}
                         />
                      ))
                   ) : (
-                     <p className="text-center font-semibold">Carrinho vazio</p>
+                     <p className="text-center font-semibold">
+                        Carrinho vazio. Vamos fazer compras?
+                     </p>
                   )}
                </div>
             </ScrollArea>
