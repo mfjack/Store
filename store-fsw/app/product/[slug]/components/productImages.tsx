@@ -21,7 +21,7 @@ const ProductImages = ({ imageUrls, name }: ProductImagesProps) => {
         <Image
           className="h-auto max-h-[70%] w-auto max-w-[80%]"
           style={{ objectFit: "contain" }}
-          src={imageUrls[0]}
+          src={currentImage}
           alt={name}
           width={0}
           height={0}
@@ -33,15 +33,15 @@ const ProductImages = ({ imageUrls, name }: ProductImagesProps) => {
         {imageUrls.map((imageUrl) => (
           <button
             className={`h-[80px] w-[80px] rounded-lg ${imageUrl === currentImage
-                ? "border-2 border-primary"
-                : "border-2 border-transparent"
+              ? "border-2 border-primary"
+              : "border-2 border-transparent"
               }`}
-            onClick={() => handleImageClick(imageUrl)}
             key={imageUrl}
+            onClick={() => handleImageClick(imageUrl)}
           >
             <Image
               className="h-auto max-h-[70%] w-auto max-w-[80%]"
-              src={currentImage}
+              src={imageUrl}
               alt={name}
               width={0}
               height={0}

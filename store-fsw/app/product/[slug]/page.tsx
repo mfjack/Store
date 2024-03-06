@@ -21,7 +21,7 @@ const ProductDetailsPage = async ({
     include: {
       category: {
         include: {
-          product: {
+          products: {
             where: {
               slug: {
                 not: slug,
@@ -40,10 +40,14 @@ const ProductDetailsPage = async ({
   return (
     <div className="flex flex-col gap-8 pb-8">
       <ProductImages imageUrls={product.imageUrls} name={product.name} />
-      <ProductInfo product={computeProductTotalPrice(product)} />
-      <div>
+      <ProductInfo
+        product={{
+          ...product,
+          totalPrice: computeProductTotalPrice(product),
+        }}
+      />      <div>
         <SectionTitle title="Produtos recomendados" />
-        <ProductList products={product.category.product} />
+        <ProductList products={product.category.products} />
       </div>
     </div>
   );

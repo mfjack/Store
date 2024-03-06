@@ -9,13 +9,9 @@ const CategoryProducts = async ({ params }: any) => {
     where: {
       slug: params.slug,
     },
-  });
-  const products = await prismaClient.product.findMany({
-    where: {
-      category: {
-        slug: params.slug,
-      },
-    },
+    include: {
+      products: true,
+    }
   });
 
   if (!category) {
@@ -33,10 +29,13 @@ const CategoryProducts = async ({ params }: any) => {
       </Badge>
 
       <div className="grid grid-cols-2 flex-wrap gap-8">
-        {products.map((product) => (
+        {category.products.map((product) => (
           <ProductItem
             key={product.id}
-            product={computeProductTotalPrice(product)}
+            product={{
+              ...product,
+              totalPrice: computeProductTotalPrice(product),
+            }}
           />
         ))}
       </div>
