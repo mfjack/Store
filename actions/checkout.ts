@@ -35,6 +35,5 @@ export const createCheckout = async (
     }),
   });
 
-  // RETORNAR O CHECKOUT
   return checkout;
 };
